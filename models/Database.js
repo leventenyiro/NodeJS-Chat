@@ -10,7 +10,7 @@ class Database {
     }
 
     login(req, callback) {
-        var sql = `SELECT password FROM user WHERE username = "${req.body.username}" OR email = "${req.body.email}"`
+        var sql = `SELECT password FROM user WHERE username = "${req.body.usernameEmail}" OR email = "${req.body.usernameEmail}"`
         this.conn.query(sql, (err, result) => {
             if (err) throw err
             return callback(result)

@@ -16,12 +16,17 @@ exports.login = (req, res) => {
     var db = new Database()
     var bcrypt = new Bcrypt()
     db.login(req, (result) => {
-        bcrypt.decrypt(req.body.password, result[0].password, (hash) => {
-            if (hash)
-                res.send("Helyes bejelentkezés")
-            else
-                res.send("Helytelen bejelentkezés")
+        if (result.length > 0) {
+            bcrypt.decrypt(req.body.password, result[0].password, (hash) => {
+                if (hash)
+                    res.json({ login: true })
+                else
+                    res.json({ login: false })
+                db.end()
+            })
+        } else {
+            res.json({ login: false })
             db.end()
-        })
+        }
     })
 }
